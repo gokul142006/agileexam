@@ -7,7 +7,7 @@ def home():
     return jsonify({
         "application": "Student Grade Calculator",
         "status": "Running",
-        "version": "1.0.0",
+        "version": "2.0.0",
         "instructions": "Send a GET request to /calculate with marks comma-separated, e.g., /calculate?marks=80,90,85"
     })
 
@@ -31,10 +31,22 @@ def calculate():
     total = sum(marks_list)
     average = total / len(marks_list)
 
-    # Note: Grade calculation will be added in Push 2 as required by the scenario
+    # Added Push 2 Logic: Grade calculation evaluation matrix
+    if average >= 90:
+        grade = "A"
+    elif average >= 80:
+        grade = "B"
+    elif average >= 70:
+        grade = "C"
+    elif average >= 60:
+        grade = "D"
+    else:
+        grade = "F"
+
     response_data = {
         "total": total,
-        "average": average
+        "average": average,
+        "grade": grade
     }
     
     return jsonify(response_data), 200

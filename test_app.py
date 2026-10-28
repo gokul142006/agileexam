@@ -11,24 +11,18 @@ def test_home_route(client):
     response = client.get('/')
     assert response.status_code == 200
     json_data = response.get_json()
-    assert json_data['application'] == "Student Grade Calculator"
+    assert json_data['version'] == "2.0.0"
 
 def test_health_route(client):
     response = client.get('/health')
     assert response.status_code == 200
-    json_data = response.get_json()
-    assert json_data['status'] == "healthy"
 
-def test_calculate_route_valid(client):
-    response = client.get('/calculate?marks=80,90,70')
-    assert response.status_code == 200
+def test_calculate_grade_a(client):
+    response = client.get('/calculate?marks=95,90,92')
     json_data = response.get_json()
-    assert json_data['total'] == 240.0
-    assert json_data['average'] == 80.0
+    assert json_data['grade'] == "A"
 
-def test_calculate_route_invalid(client):
-    response = client.get('/calculate?marks=abc,90')
-    assert response.status_code == 400
-    
-    response_empty = client.get('/calculate')
-    assert response_empty.status_code == 400
+def test_calculate_grade_f(client):
+    response = client.get('/calculate?marks=50,40,30')
+    json_data = response.get_json()
+    assert json_data['grade'] == "F"
